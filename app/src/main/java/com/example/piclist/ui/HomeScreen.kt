@@ -30,15 +30,15 @@ fun HomeScreen() {
             .fillMaxSize()
     ) {
         Column {
-            introHeader()
-            itemSelection(item = listOf("Sweet sleep","Insomnia","Depression"))
+            IntroHeader()
+            ItemSelection(item = listOf("Sweet sleep","Insomnia","Depression"))
         }
         //Navigation
     }
 }
 
 @Composable
-fun introHeader(
+fun IntroHeader(
     name: String = "Beka"
 ) {
     Row(
@@ -64,7 +64,7 @@ fun introHeader(
 }
 
 @Composable
-fun itemSelection(
+fun ItemSelection(
     item: List<String>
 ) {
     var selectedItemIndex by remember {
