@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.piclist.R
 import com.example.piclist.ui.extenstions.standardQuadFromTo
+import com.example.piclist.ui.model.BottomMenuData
 import com.example.piclist.ui.model.FeatureData
 import com.example.piclist.ui.theme.*
 
@@ -41,38 +42,118 @@ fun HomeScreen() {
             IntroHeader()
             ItemSelection(item = listOf("Sweet sleep", "Insomnia", "Depression"))
             CurrentPlayer()
-            FeatureSection(features = listOf(
-                FeatureData(
-                    title = "Sleep meditation",
-                    R.drawable.ic_play,
-                    BlueViolet1,
-                    BlueViolet2,
-                    BlueViolet3
-                ),
-                FeatureData(
-                    title = "Tips for sleeping",
-                    R.drawable.ic_play,
-                    LightGreen1,
-                    LightGreen2,
-                    LightGreen3
-                ),
-                FeatureData(
-                    title = "Night island",
-                    R.drawable.ic_play,
-                    OrangeYellow1,
-                    OrangeYellow2,
-                    OrangeYellow3
-                ),
-                FeatureData(
-                    title = "Calming sounds",
-                    R.drawable.ic_play,
-                    Beige1,
-                    Beige2,
-                    Beige3
+            FeatureSection(
+                features = listOf(
+                    FeatureData(
+                        title = "Sleep meditation",
+                        R.drawable.ic_play,
+                        BlueViolet1,
+                        BlueViolet2,
+                        BlueViolet3
+                    ),
+                    FeatureData(
+                        title = "Tips for sleeping",
+                        R.drawable.ic_play,
+                        LightGreen1,
+                        LightGreen2,
+                        LightGreen3
+                    ),
+                    FeatureData(
+                        title = "Night island",
+                        R.drawable.ic_play,
+                        OrangeYellow1,
+                        OrangeYellow2,
+                        OrangeYellow3
+                    ),
+                    FeatureData(
+                        title = "Calming sounds",
+                        R.drawable.ic_play,
+                        Beige1,
+                        Beige2,
+                        Beige3
+                    )
                 )
-            ))
+            )
         }
-        //Navigation
+        BottomMenu(
+            items = listOf(
+                BottomMenuData("Home", R.drawable.ic_search),
+                BottomMenuData("Meditate", R.drawable.ic_search),
+                BottomMenuData("Sleep", R.drawable.ic_search),
+                BottomMenuData("Music", R.drawable.ic_search),
+                BottomMenuData("Profile", R.drawable.ic_search),
+            )
+        ,modifier = Modifier.align(Alignment.BottomCenter))
+    }
+}
+
+
+@Composable
+fun BottomMenu(
+    items: List<BottomMenuData>,
+    modifier: Modifier = Modifier,
+    activeHighlightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
+    initialSelectedItemIndex: Int = 0
+) {
+    var selectedItemIndex by remember {
+        mutableStateOf(initialSelectedItemIndex)
+    }
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(DeepBlue)
+            .padding(15.dp)
+    ) {
+        items.forEachIndexed { index, item ->
+            BottomMenuItem(
+                item = item,
+                isSelected = index == selectedItemIndex,
+                activeHighlightColor = activeHighlightColor,
+                activeTextColor = activeTextColor,
+                inactiveTextColor = inactiveTextColor
+            ) {
+                selectedItemIndex = index
+            }
+        }
+    }
+
+}
+
+@Composable
+fun BottomMenuItem(
+    item: BottomMenuData,
+    isSelected: Boolean = false,
+    activeHighlightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
+    onItemClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.clickable {
+            onItemClick()
+        }
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isSelected) activeHighlightColor else Color.Transparent)
+                .padding(10.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = item.iconId),
+                contentDescription = item.title,
+                tint = if (isSelected) activeTextColor else inactiveTextColor,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Text(text = item.title, color = if (isSelected) activeTextColor else inactiveTextColor)
     }
 }
 
@@ -215,10 +296,10 @@ fun FeatureItem(
 
         val mediumColoredPath = Path().apply {
             moveTo(mediumColoredPoint1.x, mediumColoredPoint1.y)
-            standardQuadFromTo(mediumColoredPoint1,mediumColoredPoint2)
-            standardQuadFromTo(mediumColoredPoint2,mediumColoredPoint3)
-            standardQuadFromTo(mediumColoredPoint3,mediumColoredPoint4)
-            standardQuadFromTo(mediumColoredPoint4,mediumColoredPoint5)
+            standardQuadFromTo(mediumColoredPoint1, mediumColoredPoint2)
+            standardQuadFromTo(mediumColoredPoint2, mediumColoredPoint3)
+            standardQuadFromTo(mediumColoredPoint3, mediumColoredPoint4)
+            standardQuadFromTo(mediumColoredPoint4, mediumColoredPoint5)
             lineTo(width.toFloat() + 100f, height.toFloat() + 100f)
             lineTo(-100f, height.toFloat() + 100f)
             close()
